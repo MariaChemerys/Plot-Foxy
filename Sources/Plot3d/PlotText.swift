@@ -82,7 +82,7 @@ public struct PlotText {
                 fontName: String = "AppleSDGothicNeo-UltraLight",
                 fontSize: CGFloat = 0.5,
                 flatness: CGFloat = 0.001,
-                offset: CGFloat = 0.6) {
+                offset: CGFloat = 0.1) {
         self.text = text
         self.textColor = textColor
         self.fontName = fontName

@@ -384,7 +384,7 @@ public class PlotSpaceNode: SCNNode {
             }
             let textNode = text.node
             textNode.eulerAngles = tickMarkTextRotation(forAxis: .x)
-            textNode.position = SCNVector3(CGFloat(position), 0, zAxisHeight + text.offset)
+            textNode.position = SCNVector3(CGFloat(position), 0, zAxisHeight/2 + text.offset)
             xTickMarksNode.addChildNode(textNode)
         }
         
@@ -396,7 +396,7 @@ public class PlotSpaceNode: SCNNode {
             }
             let textNode = text.nodeRightAligned
             textNode.eulerAngles = tickMarkTextRotation(forAxis: .y)
-            textNode.position = SCNVector3(0, CGFloat(position), zAxisHeight + text.offset)
+            textNode.position = SCNVector3(0, CGFloat(position), zAxisHeight/2 + text.offset)
             yTickMarksNode.addChildNode(textNode)
         }
         
@@ -408,7 +408,7 @@ public class PlotSpaceNode: SCNNode {
             }
             let textNode = text.node
             textNode.eulerAngles = tickMarkTextRotation(forAxis: .z)
-            textNode.position = SCNVector3(xAxisHeight + text.offset, 0, CGFloat(position))
+            textNode.position = SCNVector3(xAxisHeight/2 + text.offset, 0, CGFloat(position))
             zTickMarksNode.addChildNode(textNode)
         }
     }
@@ -778,24 +778,24 @@ public class PlotSpaceNode: SCNNode {
             axisPosition = zAxisHeight
         }
         
-        let axisAndOffset = plotText.offset + axisHeight
+        let axisAndOffset = plotText.offset + axisHeight/2
         switch axis {
         case .x:
             xAxisTitleNode.removeFromParentNode()
             xAxisTitleNode = plotText.node
             axisTitleNode = xAxisTitleNode
-            axisTitleNode.position = SCNVector3((axisPosition)/2, 0, axisAndOffset)
+            axisTitleNode.position = SCNVector3((axisPosition)/4, 0, axisAndOffset)
         case .y:
             yAxisTitleNode.removeFromParentNode()
             yAxisTitleNode = plotText.node
             axisTitleNode = yAxisTitleNode
-            axisTitleNode.position = SCNVector3(0, (axisPosition)/2, axisAndOffset)
+            axisTitleNode.position = SCNVector3(0, (axisPosition)/4, axisAndOffset)
             
         case .z:
             zAxisTitleNode.removeFromParentNode()
             zAxisTitleNode = plotText.node
             axisTitleNode = zAxisTitleNode
-            axisTitleNode.position = SCNVector3(axisAndOffset, 0, (axisPosition)/2)
+            axisTitleNode.position = SCNVector3(axisAndOffset, 0, (axisPosition)/4)
         }
         
         axisTitleNode.eulerAngles = axisTextRotation(forAxis: axis)
