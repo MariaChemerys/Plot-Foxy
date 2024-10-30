@@ -327,16 +327,30 @@ public class PlotSpaceNode: SCNNode {
      - returns: The array of nodes that contains the gridlines that were added.
     */
     private func addGridLines(rootNode: SCNNode, spacing: CGFloat, direction: SCNVector3, color: UIColor, axisHeight: CGFloat, axisLength: CGFloat) -> [SCNNode] {
-        let lineCount = Int(axisHeight/2/spacing)
+        let lineCount = Int(axisHeight / 2 / spacing)
         var gridLines = [SCNNode]()
+        
         for i in 0..<lineCount {
-            let gridLine = SCNCylinder(radius: gridlineRadius, height: axisLength)
-            gridLine.materials.first!.diffuse.contents = color
-            let gridLineNode = SCNNode(geometry: gridLine)
+            let gridLinePositive = SCNCylinder(radius: gridlineRadius, height: axisLength)
+            gridLinePositive.materials.first!.diffuse.contents = color
+            let gridLineNodePositive = SCNNode(geometry: gridLinePositive)
+            
+            let gridLineNegative = SCNCylinder(radius: gridlineRadius, height: axisLength)
+            gridLineNegative.materials.first!.diffuse.contents = color
+            let gridLineNodeNegative = SCNNode(geometry: gridLineNegative)
+            
+            // Calculate positions for both positive and negative directions
             let position = spacing * CGFloat(i + 1)
-            gridLineNode.position = SCNVector3(position, position, position) * direction
-            rootNode.addChildNode(gridLineNode)
-            gridLines.append(gridLineNode)
+            gridLineNodePositive.position = SCNVector3(position, position, position) * direction
+            gridLineNodeNegative.position = SCNVector3(-position, -position, -position) * direction
+            
+            // Add gridlines to the root node
+            rootNode.addChildNode(gridLineNodePositive)
+            rootNode.addChildNode(gridLineNodeNegative)
+            
+            // Append both nodes to the array
+            gridLines.append(gridLineNodePositive)
+            gridLines.append(gridLineNodeNegative)
         }
         
         return gridLines
