@@ -253,21 +253,33 @@ public class PlotSpaceNode: SCNNode {
      - parameter axisHeight: The height of each axis.
      */
     private func setupAxis() {
-        xAxisNode.position = SCNVector3(xAxisHeight/2, 0, 0)
+        xAxisNode.position = SCNVector3(0, 0, 0)
         xAxisNode.eulerAngles = SCNVector3(0, 0, -Double.pi/2)
         xArrowNode.position = SCNVector3(0, xAxisHeight/2, 0)
+        let xNegativeArrowNode = SCNNode(geometry: xAxisArrow)
+        xNegativeArrowNode.eulerAngles = SCNVector3(Double.pi, 0, 0)
+        xNegativeArrowNode.position = SCNVector3(0, -xAxisHeight/2, 0)
         xAxisNode.addChildNode(xArrowNode)
+        xAxisNode.addChildNode(xNegativeArrowNode)
         addChildNode(xAxisNode)
 
-        yAxisNode.position = SCNVector3(0, yAxisHeight/2, 0)
+        yAxisNode.position = SCNVector3(0, 0, 0)
         yArrowNode.position = SCNVector3(0, yAxisHeight/2, 0)
+        let yNegativeArrowNode = SCNNode(geometry: yAxisArrow)
+        yNegativeArrowNode.eulerAngles = SCNVector3(Double.pi, 0, 0)
+        yNegativeArrowNode.position = SCNVector3(0, -yAxisHeight/2, 0)
         yAxisNode.addChildNode(yArrowNode)
+        yAxisNode.addChildNode(yNegativeArrowNode)
         addChildNode(yAxisNode)
-        
-        zAxisNode.position = SCNVector3(0, 0, zAxisHeight/2)
+
+        zAxisNode.position = SCNVector3(0, 0, 0)
         zAxisNode.eulerAngles = SCNVector3(Double.pi/2, 0, 0)
         zArrowNode.position = SCNVector3(0, zAxisHeight/2, 0)
+        let zNegativeArrowNode = SCNNode(geometry: zAxisArrow)
+        zNegativeArrowNode.eulerAngles = SCNVector3(0, 0, Double.pi)
+        zNegativeArrowNode.position = SCNVector3(0, -zAxisHeight/2, 0)
         zAxisNode.addChildNode(zArrowNode)
+        zAxisNode.addChildNode(zNegativeArrowNode)
         addChildNode(zAxisNode)
 
         originGeometry.materials.first!.diffuse.contents = UIColor.white
@@ -315,7 +327,7 @@ public class PlotSpaceNode: SCNNode {
      - returns: The array of nodes that contains the gridlines that were added.
     */
     private func addGridLines(rootNode: SCNNode, spacing: CGFloat, direction: SCNVector3, color: UIColor, axisHeight: CGFloat, axisLength: CGFloat) -> [SCNNode] {
-        let lineCount = Int(axisHeight/spacing)
+        let lineCount = Int(axisHeight/2/spacing)
         var gridLines = [SCNNode]()
         for i in 0..<lineCount {
             let gridLine = SCNCylinder(radius: gridlineRadius, height: axisLength)
@@ -401,31 +413,29 @@ public class PlotSpaceNode: SCNNode {
         
         switch plane {
         case .xy:
-            axisW = xAxisHeight
-            axisH = yAxisHeight
+            axisW = xAxisHeight/2
+            axisH = yAxisHeight/2
         case .xz:
-            axisW = xAxisHeight
-            axisH = zAxisHeight
+            axisW = xAxisHeight/2
+            axisH = zAxisHeight/2
         case .yz:
-            axisW = yAxisHeight
-            axisH = zAxisHeight
+            axisW = yAxisHeight/2
+            axisH = zAxisHeight/2
         }
         
-        let offsetW = axisW/2
-        let offsetH = axisH/2
         var wallNode: SCNNode
         switch plane {
         case .xy:
             wallNode = wallXYNode
-            wallNode.position = SCNVector3(offsetW, offsetH, 0)
+            wallNode.position = SCNVector3(0, 0, 0)
         case .xz:
             wallNode = wallXZNode
             wallNode.eulerAngles = SCNVector3(-Double.pi/2, 0, 0)
-            wallNode.position = SCNVector3(offsetW, 0, offsetH)
+            wallNode.position = SCNVector3(0, 0, 0)
         case .yz:
             wallNode = wallYZNode
             wallNode.eulerAngles = SCNVector3(0, Double.pi/2, 0)
-            wallNode.position = SCNVector3(0, offsetW, offsetH)
+            wallNode.position = SCNVector3(0, 0, 0)
         }
         
         addChildNode(wallNode)
