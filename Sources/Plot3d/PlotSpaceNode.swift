@@ -301,16 +301,16 @@ public class PlotSpaceNode: SCNNode {
         let yOffset = yGridSpacing/2
         let zOffset = zGridSpacing/2
         
-        unitPlaneXY.materials.first!.diffuse.contents = config.xyGridColor
+        unitPlaneXY.materials.first!.diffuse.contents = config.xyUnitPlaneColor
         unitPlaneXYNode.position = SCNVector3(xOffset, yOffset, 0)
         addChildNode(unitPlaneXYNode)
         
-        unitPlaneXZ.materials.first!.diffuse.contents = config.xzGridColor
+        unitPlaneXZ.materials.first!.diffuse.contents = config.xzUnitPlaneColor
         unitPlaneXZNode.eulerAngles = SCNVector3(-Double.pi/2, 0, 0)
         unitPlaneXZNode.position = SCNVector3(xOffset, 0, zOffset)
         addChildNode(unitPlaneXZNode)
         
-        unitPlaneYZ.materials.first!.diffuse.contents = config.yzGridColor
+        unitPlaneYZ.materials.first!.diffuse.contents = config.yzUnitPlaneColor
         unitPlaneYZNode.eulerAngles = SCNVector3(0, Double.pi/2, 0)
         unitPlaneYZNode.position = SCNVector3(0, yOffset, zOffset)
         addChildNode(unitPlaneYZNode)
