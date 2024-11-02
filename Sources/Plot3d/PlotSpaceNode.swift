@@ -6,6 +6,7 @@
 //  Copyright © 2019 Stokaty. All rights reserved.
 //
 
+import Foundation
 import SceneKit
 
 /**
@@ -18,26 +19,50 @@ public class PlotSpaceNode: SCNNode {
     // Axis
     /// The height of the cylinder for the x axis.
     let xAxisHeight: CGFloat
+    /// The height of the cylinder for the positive x axis.
+    let xPositiveAxisHeight: CGFloat
+    /// The height of the cylinder for the negative x axis.
+    let xNegativeAxisHeight: CGFloat
     /// The height of the cylinder for the y axis.
     let yAxisHeight: CGFloat
+    /// The height of the cylinder for the positive y axis.
+    let yPositiveAxisHeight: CGFloat
+    /// The height of the cylinder for the negative y axis.
+    let yNegativeAxisHeight: CGFloat
     /// The height of the cylinder for the z axis.
     let zAxisHeight: CGFloat
+    /// The height of the cylinder for the positive z axis.
+    let zPositiveAxisHeight: CGFloat
+    /// The height of the cylinder for the negative z axis.
+    let zNegativeAxisHeight: CGFloat
     /// The radius of the cylinder for each axis.
     let axisRadius: CGFloat
     /// The radius of the cyclinder for each gridline.
     let gridlineRadius: CGFloat
-    /// The geometry of the x axis.
-    let xAxis: SCNGeometry
-    /// The geometry of the y axis.
-    let yAxis: SCNGeometry
-    /// The geometry of the z axis.
-    let zAxis: SCNGeometry
-    /// The node for the x axis.
-    let xAxisNode: SCNNode
-    /// The node for the y axis.
-    let yAxisNode: SCNNode
-    /// The node for the z axis.
-    let zAxisNode: SCNNode
+    /// The geometry of the positive x axis.
+    let xPositiveAxis: SCNGeometry
+    /// The geometry of the negative x axis.
+    let xNegativeAxis: SCNGeometry
+    /// The geometry of the positive y axis.
+    let yPositiveAxis: SCNGeometry
+    /// The geometry of the negative y axis.
+    let yNegativeAxis: SCNGeometry
+    /// The geometry of the positive z axis.
+    let zPositiveAxis: SCNGeometry
+    /// The geometry of the negative z axis.
+    let zNegativeAxis: SCNGeometry
+    /// The node for the positive x axis.
+    let xPositiveAxisNode: SCNNode
+    /// The node for the negative x axis.
+    let xNegativeAxisNode: SCNNode
+    /// The node for the positive y axis.
+    let yPositiveAxisNode: SCNNode
+    /// The node for the negative y axis.
+    let yNegativeAxisNode: SCNNode
+    /// The node for the positive z axis.
+    let zPositiveAxisNode: SCNNode
+    /// The node for the negative z axis.
+    let zNegativeAxisNode: SCNNode
     /// The geometry of the origin node.
     let originGeometry: SCNGeometry
     
@@ -62,12 +87,19 @@ public class PlotSpaceNode: SCNNode {
     let yAxisArrow: SCNGeometry
     /// The geometry of the arrow on the z axis.
     let zAxisArrow: SCNGeometry
-    /// The node for the arrow on the x axis.
-    let xArrowNode: SCNNode
-    /// The node for the arrow on the y axis.
-    let yArrowNode: SCNNode
-    /// The node for the arrow on the z axis.
-    let zArrowNode: SCNNode
+    
+    /// The node for the arrow on the positive x axis.
+    let xPositiveArrowNode: SCNNode
+    /// The node for the arrow on the negative x axis.
+    let xNegativeArrowNode: SCNNode
+    /// The node for the arrow on the positive y axis.
+    let yPositiveArrowNode: SCNNode
+    /// The node for the arrow on the negative y axis.
+    let yNegativeArrowNode: SCNNode
+    /// The node for the positive arrow on the z axis.
+    let zPositiveArrowNode: SCNNode
+    /// The node for the negative arrow on the z axis.
+    let zNegativeArrowNode: SCNNode
     
     // Planes
     /// The plane that is one unit in size to show the xy plane.
@@ -158,25 +190,46 @@ public class PlotSpaceNode: SCNNode {
     init(config: PlotConfiguration) {
         
         xAxisHeight = config.xAxisHeight
+        xPositiveAxisHeight = xAxisHeight / (abs(config.xMax) + abs(config.xMin)) * abs(config.xMax)
+        xNegativeAxisHeight = xAxisHeight / (abs(config.xMax) + abs(config.xMin)) * abs(config.xMin)
+        
         yAxisHeight = config.yAxisHeight
+        yPositiveAxisHeight = yAxisHeight / (abs(config.yMax) + abs(config.yMin)) * abs(config.yMax)
+        yNegativeAxisHeight = yAxisHeight / (abs(config.yMax) + abs(config.yMin)) * abs(config.yMin)
+        
         zAxisHeight = config.zAxisHeight
+        zPositiveAxisHeight = zAxisHeight / (abs(config.zMax) + abs(config.zMin)) * abs(config.zMax)
+        zNegativeAxisHeight = zAxisHeight / (abs(config.zMax) + abs(config.zMin)) * abs(config.zMin)
+        
         axisRadius = config.axisRadius
         gridlineRadius = config.gridlineRadius
-        xAxis = SCNCylinder(radius: axisRadius, height: xAxisHeight)
-        yAxis = SCNCylinder(radius: axisRadius, height: yAxisHeight)
-        zAxis = SCNCylinder(radius: axisRadius, height: zAxisHeight)
+        
+        xPositiveAxis = SCNCylinder(radius: axisRadius, height: xPositiveAxisHeight)
+        xNegativeAxis = SCNCylinder(radius: axisRadius, height: xNegativeAxisHeight)
+        
+        yPositiveAxis = SCNCylinder(radius: axisRadius, height: yPositiveAxisHeight)
+        yNegativeAxis = SCNCylinder(radius: axisRadius, height: yNegativeAxisHeight)
+        
+        zPositiveAxis = SCNCylinder(radius: axisRadius, height: zPositiveAxisHeight)
+        zNegativeAxis = SCNCylinder(radius: axisRadius, height: zNegativeAxisHeight)
         
         xAxisArrow = SCNCone(topRadius: 0, bottomRadius: config.arrowBottomRadius, height: config.arrowHeight)
         yAxisArrow = SCNCone(topRadius: 0, bottomRadius: config.arrowBottomRadius, height: config.arrowHeight)
         zAxisArrow = SCNCone(topRadius: 0, bottomRadius: config.arrowBottomRadius, height: config.arrowHeight)
         
-        xAxisNode = SCNNode(geometry: xAxis)
-        yAxisNode = SCNNode(geometry: yAxis)
-        zAxisNode = SCNNode(geometry: zAxis)
+        xPositiveAxisNode = SCNNode(geometry: xPositiveAxis)
+        xNegativeAxisNode = SCNNode(geometry: xNegativeAxis)
+        yPositiveAxisNode = SCNNode(geometry: yPositiveAxis)
+        yNegativeAxisNode = SCNNode(geometry: yNegativeAxis)
+        zPositiveAxisNode = SCNNode(geometry: zPositiveAxis)
+        zNegativeAxisNode = SCNNode(geometry: zNegativeAxis)
         
-        xArrowNode = SCNNode(geometry: xAxisArrow)
-        yArrowNode = SCNNode(geometry: yAxisArrow)
-        zArrowNode = SCNNode(geometry: zAxisArrow)
+        xPositiveArrowNode = SCNNode(geometry: xAxisArrow)
+        xNegativeArrowNode = SCNNode(geometry: xAxisArrow)
+        yPositiveArrowNode = SCNNode(geometry: yAxisArrow)
+        yNegativeArrowNode = SCNNode(geometry: yAxisArrow)
+        zPositiveArrowNode = SCNNode(geometry: zAxisArrow)
+        zNegativeArrowNode = SCNNode(geometry: zAxisArrow)
         
         originGeometry = SCNSphere(radius: axisRadius)
                 
@@ -224,14 +277,14 @@ public class PlotSpaceNode: SCNNode {
         setupUnitPlanes(xGridSpacing: xGridSpacing, yGridSpacing: yGridSpacing, zGridSpacing: zGridSpacing, config: config)
         
         // xy grid lines
-        gridLinesHorizontalXY += addGridLines(rootNode: xAxisNode, spacing: yGridSpacing, direction: PlotAxis.x.negativeDirection, color: config.xyGridColor, axisHeight: yAxisHeight, axisLength: xAxisHeight)
-        gridLinesVerticalXY += addGridLines(rootNode: yAxisNode, spacing: xGridSpacing, direction: PlotAxis.x.direction, color: config.xyGridColor, axisHeight: xAxisHeight, axisLength: yAxisHeight)
+        gridLinesHorizontalXY += addGridLines(rootNode: xPositiveAxisNode, spacing: yGridSpacing, direction: PlotAxis.x.negativeDirection, color: config.xyGridColor, axisHeight: yAxisHeight, axisLength: xAxisHeight)
+        gridLinesVerticalXY += addGridLines(rootNode: yPositiveAxisNode, spacing: xGridSpacing, direction: PlotAxis.x.direction, color: config.xyGridColor, axisHeight: xAxisHeight, axisLength: yAxisHeight)
         // xz grid lines
-        gridLinesHorizontalXZ += addGridLines(rootNode: xAxisNode, spacing: zGridSpacing, direction: PlotAxis.z.direction, color: config.xzGridColor, axisHeight: zAxisHeight, axisLength: xAxisHeight)
-        gridLinesVerticalXZ += addGridLines(rootNode: zAxisNode, spacing: xGridSpacing, direction: PlotAxis.x.direction, color: config.xzGridColor, axisHeight: xAxisHeight, axisLength: zAxisHeight)
+        gridLinesHorizontalXZ += addGridLines(rootNode: xPositiveAxisNode, spacing: zGridSpacing, direction: PlotAxis.z.direction, color: config.xzGridColor, axisHeight: zAxisHeight, axisLength: xAxisHeight)
+        gridLinesVerticalXZ += addGridLines(rootNode: zPositiveAxisNode, spacing: xGridSpacing, direction: PlotAxis.x.direction, color: config.xzGridColor, axisHeight: xAxisHeight, axisLength: zAxisHeight)
         // yz grid lines
-        gridLinesVerticalYZ += addGridLines(rootNode: yAxisNode, spacing: zGridSpacing, direction: PlotAxis.z.direction, color: config.yzGridColor, axisHeight: zAxisHeight, axisLength: yAxisHeight)
-        gridLinesHorizontalYZ += addGridLines(rootNode: zAxisNode, spacing: yGridSpacing, direction: PlotAxis.z.negativeDirection, color: config.yzGridColor, axisHeight: yAxisHeight, axisLength: zAxisHeight)
+        gridLinesVerticalYZ += addGridLines(rootNode: yPositiveAxisNode, spacing: zGridSpacing, direction: PlotAxis.z.direction, color: config.yzGridColor, axisHeight: zAxisHeight, axisLength: yAxisHeight)
+        gridLinesHorizontalYZ += addGridLines(rootNode: zPositiveAxisNode, spacing: yGridSpacing, direction: PlotAxis.z.negativeDirection, color: config.yzGridColor, axisHeight: yAxisHeight, axisLength: zAxisHeight)
         
         addWall(plane: .xy, color: config.xyPlaneColor)
         addWall(plane: .xz, color: config.xzPlaneColor)
@@ -253,34 +306,42 @@ public class PlotSpaceNode: SCNNode {
      - parameter axisHeight: The height of each axis.
      */
     private func setupAxis() {
-        xAxisNode.position = SCNVector3(0, 0, 0)
-        xAxisNode.eulerAngles = SCNVector3(0, 0, -Double.pi/2)
-        xArrowNode.position = SCNVector3(0, xAxisHeight/2, 0)
-        let xNegativeArrowNode = SCNNode(geometry: xAxisArrow)
+        xPositiveAxisNode.position = SCNVector3(xPositiveAxisHeight/2, 0, 0)
+        xPositiveAxisNode.eulerAngles = SCNVector3(0, 0, -Double.pi/2)
+        addChildNode(xPositiveAxisNode)
+        xPositiveArrowNode.position = SCNVector3(0, xPositiveAxisHeight/2, 0)
+        xPositiveAxisNode.addChildNode(xPositiveArrowNode)
+        
+        xNegativeAxisNode.position = SCNVector3(-xNegativeAxisHeight/2, 0, 0)
+        xNegativeAxisNode.eulerAngles = SCNVector3(0, 0, -Double.pi/2)
+        addChildNode(xNegativeAxisNode)
         xNegativeArrowNode.eulerAngles = SCNVector3(Double.pi, 0, 0)
-        xNegativeArrowNode.position = SCNVector3(0, -xAxisHeight/2, 0)
-        xAxisNode.addChildNode(xArrowNode)
-        xAxisNode.addChildNode(xNegativeArrowNode)
-        addChildNode(xAxisNode)
+        xNegativeArrowNode.position = SCNVector3(0, -xNegativeAxisHeight/2, 0)
+        xNegativeAxisNode.addChildNode(xNegativeArrowNode)
 
-        yAxisNode.position = SCNVector3(0, 0, 0)
-        yArrowNode.position = SCNVector3(0, yAxisHeight/2, 0)
-        let yNegativeArrowNode = SCNNode(geometry: yAxisArrow)
+        yPositiveAxisNode.position = SCNVector3(0, yPositiveAxisHeight/2, 0)
+        addChildNode(yPositiveAxisNode)
+        yPositiveArrowNode.position = SCNVector3(0, yPositiveAxisHeight/2, 0)
+        yPositiveAxisNode.addChildNode(yPositiveArrowNode)
+
+        yNegativeAxisNode.position = SCNVector3(0, -yNegativeAxisHeight/2, 0)
         yNegativeArrowNode.eulerAngles = SCNVector3(Double.pi, 0, 0)
-        yNegativeArrowNode.position = SCNVector3(0, -yAxisHeight/2, 0)
-        yAxisNode.addChildNode(yArrowNode)
-        yAxisNode.addChildNode(yNegativeArrowNode)
-        addChildNode(yAxisNode)
+        addChildNode(yNegativeAxisNode)
+        yNegativeArrowNode.position = SCNVector3(0, -yNegativeAxisHeight/2, 0)
+        yNegativeAxisNode.addChildNode(yNegativeArrowNode)
 
-        zAxisNode.position = SCNVector3(0, 0, 0)
-        zAxisNode.eulerAngles = SCNVector3(Double.pi/2, 0, 0)
-        zArrowNode.position = SCNVector3(0, zAxisHeight/2, 0)
-        let zNegativeArrowNode = SCNNode(geometry: zAxisArrow)
+        zPositiveAxisNode.position = SCNVector3(0, 0, zPositiveAxisHeight/2)
+        zPositiveAxisNode.eulerAngles = SCNVector3(Double.pi/2, 0, 0)
+        addChildNode(zPositiveAxisNode)
+        zPositiveArrowNode.position = SCNVector3(0, zPositiveAxisHeight/2, 0)
+        zPositiveAxisNode.addChildNode(zPositiveArrowNode)
+        
+        zNegativeAxisNode.position = SCNVector3(0, 0, -zNegativeAxisHeight/2)
+        zNegativeAxisNode.eulerAngles = SCNVector3(Double.pi/2, 0, 0)
+        addChildNode(zNegativeAxisNode)
+        zNegativeArrowNode.position = SCNVector3(0, -zNegativeAxisHeight/2, 0)
         zNegativeArrowNode.eulerAngles = SCNVector3(0, 0, Double.pi)
-        zNegativeArrowNode.position = SCNVector3(0, -zAxisHeight/2, 0)
-        zAxisNode.addChildNode(zArrowNode)
-        zAxisNode.addChildNode(zNegativeArrowNode)
-        addChildNode(zAxisNode)
+        zNegativeAxisNode.addChildNode(zNegativeArrowNode)
 
         originGeometry.materials.first!.diffuse.contents = UIColor.white
         let originNode = SCNNode(geometry: originGeometry)
@@ -331,11 +392,11 @@ public class PlotSpaceNode: SCNNode {
         var gridLines = [SCNNode]()
         
         for i in 0..<lineCount {
-            let gridLinePositive = SCNCylinder(radius: gridlineRadius, height: axisLength)
+            let gridLinePositive = SCNCylinder(radius: gridlineRadius, height: axisLength/2)
             gridLinePositive.materials.first!.diffuse.contents = color
             let gridLineNodePositive = SCNNode(geometry: gridLinePositive)
             
-            let gridLineNegative = SCNCylinder(radius: gridlineRadius, height: axisLength)
+            let gridLineNegative = SCNCylinder(radius: gridlineRadius, height: axisLength/2)
             gridLineNegative.materials.first!.diffuse.contents = color
             let gridLineNodeNegative = SCNNode(geometry: gridLineNegative)
             
