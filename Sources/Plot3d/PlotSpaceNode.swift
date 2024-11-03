@@ -277,14 +277,26 @@ public class PlotSpaceNode: SCNNode {
         setupUnitPlanes(xGridSpacing: xGridSpacing, yGridSpacing: yGridSpacing, zGridSpacing: zGridSpacing, config: config)
         
         // xy grid lines
-        gridLinesHorizontalXY += addGridLines(rootNode: xPositiveAxisNode, spacing: yGridSpacing, direction: PlotAxis.x.negativeDirection, color: config.xyGridColor, axisHeight: yAxisHeight, axisLength: xAxisHeight)
-        gridLinesVerticalXY += addGridLines(rootNode: yPositiveAxisNode, spacing: xGridSpacing, direction: PlotAxis.x.direction, color: config.xyGridColor, axisHeight: xAxisHeight, axisLength: yAxisHeight)
-        // xz grid lines
-        gridLinesHorizontalXZ += addGridLines(rootNode: xPositiveAxisNode, spacing: zGridSpacing, direction: PlotAxis.z.direction, color: config.xzGridColor, axisHeight: zAxisHeight, axisLength: xAxisHeight)
-        gridLinesVerticalXZ += addGridLines(rootNode: zPositiveAxisNode, spacing: xGridSpacing, direction: PlotAxis.x.direction, color: config.xzGridColor, axisHeight: xAxisHeight, axisLength: zAxisHeight)
-        // yz grid lines
-        gridLinesVerticalYZ += addGridLines(rootNode: yPositiveAxisNode, spacing: zGridSpacing, direction: PlotAxis.z.direction, color: config.yzGridColor, axisHeight: zAxisHeight, axisLength: yAxisHeight)
-        gridLinesHorizontalYZ += addGridLines(rootNode: zPositiveAxisNode, spacing: yGridSpacing, direction: PlotAxis.z.negativeDirection, color: config.yzGridColor, axisHeight: yAxisHeight, axisLength: zAxisHeight)
+        gridLinesHorizontalXY += addGridLines(rootNode: xPositiveAxisNode, spacing: yGridSpacing, direction: PlotAxis.x.negativeDirection, color: config.xyGridColor, positiveAxisHeight: yPositiveAxisHeight, negativeAxisHeight: yNegativeAxisHeight, axisLength: xPositiveAxisHeight)
+        gridLinesHorizontalXY += addGridLines(rootNode: xNegativeAxisNode, spacing: yGridSpacing, direction: PlotAxis.x.negativeDirection, color: config.xyGridColor, positiveAxisHeight: yPositiveAxisHeight, negativeAxisHeight: yNegativeAxisHeight, axisLength: xNegativeAxisHeight)
+        
+        gridLinesVerticalXY += addGridLines(rootNode: yPositiveAxisNode, spacing: xGridSpacing, direction: PlotAxis.x.direction, color: config.xyGridColor, positiveAxisHeight: xPositiveAxisHeight, negativeAxisHeight: xNegativeAxisHeight, axisLength: yPositiveAxisHeight)
+        gridLinesVerticalXY += addGridLines(rootNode: yNegativeAxisNode, spacing: xGridSpacing, direction: PlotAxis.x.direction, color: config.xyGridColor, positiveAxisHeight: xPositiveAxisHeight, negativeAxisHeight: xNegativeAxisHeight, axisLength: yNegativeAxisHeight)
+        
+//        // xz grid lines
+        gridLinesHorizontalXZ += addGridLines(rootNode: xPositiveAxisNode, spacing: zGridSpacing, direction: PlotAxis.z.direction, color: config.xzGridColor, positiveAxisHeight: zPositiveAxisHeight, negativeAxisHeight: zNegativeAxisHeight, axisLength: xPositiveAxisHeight)
+        gridLinesHorizontalXZ += addGridLines(rootNode: xNegativeAxisNode, spacing: zGridSpacing, direction: PlotAxis.z.direction, color: config.xzGridColor, positiveAxisHeight: zPositiveAxisHeight, negativeAxisHeight: zNegativeAxisHeight, axisLength: xNegativeAxisHeight)
+        
+        gridLinesVerticalXZ += addGridLines(rootNode: zPositiveAxisNode, spacing: xGridSpacing, direction: PlotAxis.x.direction, color: config.xzGridColor, positiveAxisHeight: xPositiveAxisHeight, negativeAxisHeight: xNegativeAxisHeight, axisLength: zPositiveAxisHeight)
+        gridLinesVerticalXZ += addGridLines(rootNode: zNegativeAxisNode, spacing: xGridSpacing, direction: PlotAxis.x.direction, color: config.xzGridColor, positiveAxisHeight: xPositiveAxisHeight, negativeAxisHeight: xNegativeAxisHeight, axisLength: zNegativeAxisHeight)
+        
+//        // yz grid lines
+        gridLinesHorizontalYZ += addGridLines(rootNode: zPositiveAxisNode, spacing: yGridSpacing, direction: PlotAxis.z.negativeDirection, color: config.yzGridColor, positiveAxisHeight: yPositiveAxisHeight, negativeAxisHeight: yNegativeAxisHeight, axisLength: zPositiveAxisHeight)
+        gridLinesHorizontalYZ += addGridLines(rootNode: zNegativeAxisNode, spacing: yGridSpacing, direction: PlotAxis.z.negativeDirection, color: config.yzGridColor, positiveAxisHeight: yPositiveAxisHeight, negativeAxisHeight: yNegativeAxisHeight, axisLength: zNegativeAxisHeight)
+        
+        gridLinesVerticalYZ += addGridLines(rootNode: yPositiveAxisNode, spacing: zGridSpacing, direction: PlotAxis.z.direction, color: config.yzGridColor, positiveAxisHeight: zPositiveAxisHeight, negativeAxisHeight: zNegativeAxisHeight, axisLength: yPositiveAxisHeight)
+        gridLinesVerticalYZ += addGridLines(rootNode: yNegativeAxisNode, spacing: zGridSpacing, direction: PlotAxis.z.direction, color: config.yzGridColor, positiveAxisHeight: zPositiveAxisHeight, negativeAxisHeight: zNegativeAxisHeight, axisLength: yNegativeAxisHeight)
+
         
         addWall(plane: .xy, color: config.xyPlaneColor)
         addWall(plane: .xz, color: config.xzPlaneColor)
@@ -387,33 +399,30 @@ public class PlotSpaceNode: SCNNode {
         - axisHeight: The scene height of the axis.
      - returns: The array of nodes that contains the gridlines that were added.
     */
-    private func addGridLines(rootNode: SCNNode, spacing: CGFloat, direction: SCNVector3, color: UIColor, axisHeight: CGFloat, axisLength: CGFloat) -> [SCNNode] {
-        let lineCount = Int(axisHeight / 2 / spacing)
+    private func addGridLines(rootNode: SCNNode, spacing: CGFloat, direction: SCNVector3, color: UIColor, positiveAxisHeight: CGFloat, negativeAxisHeight: CGFloat, axisLength: CGFloat) -> [SCNNode] {
+        let positiveLineCount = Int(positiveAxisHeight / spacing)
+        let negativeLineCount = Int(negativeAxisHeight / spacing)
         var gridLines = [SCNNode]()
         
-        for i in 0..<lineCount {
-            let gridLinePositive = SCNCylinder(radius: gridlineRadius, height: axisLength/2)
+        for i in 0..<positiveLineCount {
+            let gridLinePositive = SCNCylinder(radius: gridlineRadius, height: axisLength)
             gridLinePositive.materials.first!.diffuse.contents = color
             let gridLineNodePositive = SCNNode(geometry: gridLinePositive)
-            
-            let gridLineNegative = SCNCylinder(radius: gridlineRadius, height: axisLength/2)
-            gridLineNegative.materials.first!.diffuse.contents = color
-            let gridLineNodeNegative = SCNNode(geometry: gridLineNegative)
-            
-            // Calculate positions for both positive and negative directions
             let position = spacing * CGFloat(i + 1)
             gridLineNodePositive.position = SCNVector3(position, position, position) * direction
-            gridLineNodeNegative.position = SCNVector3(-position, -position, -position) * direction
-            
-            // Add gridlines to the root node
             rootNode.addChildNode(gridLineNodePositive)
-            rootNode.addChildNode(gridLineNodeNegative)
-            
-            // Append both nodes to the array
             gridLines.append(gridLineNodePositive)
-            gridLines.append(gridLineNodeNegative)
         }
         
+        for i in 0..<negativeLineCount {
+            let gridLineNegative = SCNCylinder(radius: gridlineRadius, height: axisLength)
+            gridLineNegative.materials.first!.diffuse.contents = color
+            let gridLineNodeNegative = SCNNode(geometry: gridLineNegative)
+            let position = spacing * CGFloat(i + 1)
+            gridLineNodeNegative.position = SCNVector3(-position, -position, -position) * direction
+            rootNode.addChildNode(gridLineNodeNegative)
+            gridLines.append(gridLineNodeNegative)
+        }
         return gridLines
     }
     
