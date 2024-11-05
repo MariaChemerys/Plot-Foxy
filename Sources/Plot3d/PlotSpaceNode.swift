@@ -533,15 +533,15 @@ public class PlotSpaceNode: SCNNode {
         switch plane {
         case .xy:
             wallNode = wallXYNode
-            wallNode.position = SCNVector3(0, 0, 0)
+            wallNode.position = SCNVector3((xPositiveAxisHeight - xNegativeAxisHeight) / 2, (yPositiveAxisHeight - yNegativeAxisHeight) / 2, 0)
         case .xz:
             wallNode = wallXZNode
             wallNode.eulerAngles = SCNVector3(-Double.pi/2, 0, 0)
-            wallNode.position = SCNVector3(0, 0, 0)
+            wallNode.position = SCNVector3((xPositiveAxisHeight - xNegativeAxisHeight) / 2, 0, (zPositiveAxisHeight - zNegativeAxisHeight) / 2)
         case .yz:
             wallNode = wallYZNode
             wallNode.eulerAngles = SCNVector3(0, Double.pi/2, 0)
-            wallNode.position = SCNVector3(0, 0, 0)
+            wallNode.position = SCNVector3(0, (yPositiveAxisHeight - yNegativeAxisHeight) / 2, (zPositiveAxisHeight - zNegativeAxisHeight) / 2)
         }
         
         addChildNode(wallNode)
