@@ -860,34 +860,34 @@ public class PlotSpaceNode: SCNNode {
         var axisPosition: CGFloat
         switch axis {
         case .x:
-            axisHeight = zAxisHeight
-            axisPosition = xAxisHeight
+            axisHeight = zPositiveAxisHeight
+            axisPosition = xPositiveAxisHeight > 0 ? xPositiveAxisHeight : -xNegativeAxisHeight
         case .y:
-            axisHeight = zAxisHeight
-            axisPosition = yAxisHeight
+            axisHeight = zPositiveAxisHeight
+            axisPosition = yPositiveAxisHeight > 0 ? yPositiveAxisHeight : -yNegativeAxisHeight
         case .z:
-            axisHeight = xAxisHeight
-            axisPosition = zAxisHeight
+            axisHeight = xPositiveAxisHeight
+            axisPosition = zPositiveAxisHeight > 0 ? zPositiveAxisHeight : -zNegativeAxisHeight
         }
         
-        let axisAndOffset = plotText.offset + axisHeight/2
+        let axisAndOffset = plotText.offset + axisHeight
         switch axis {
         case .x:
             xAxisTitleNode.removeFromParentNode()
             xAxisTitleNode = plotText.node
             axisTitleNode = xAxisTitleNode
-            axisTitleNode.position = SCNVector3((axisPosition)/4, 0, axisAndOffset)
+            axisTitleNode.position = SCNVector3(axisPosition / 2, 0, axisAndOffset)
         case .y:
             yAxisTitleNode.removeFromParentNode()
             yAxisTitleNode = plotText.node
             axisTitleNode = yAxisTitleNode
-            axisTitleNode.position = SCNVector3(0, (axisPosition)/4, axisAndOffset)
+            axisTitleNode.position = SCNVector3(0, axisPosition / 2, axisAndOffset)
             
         case .z:
             zAxisTitleNode.removeFromParentNode()
             zAxisTitleNode = plotText.node
             axisTitleNode = zAxisTitleNode
-            axisTitleNode.position = SCNVector3(axisAndOffset, 0, (axisPosition)/4)
+            axisTitleNode.position = SCNVector3(axisAndOffset, 0, axisPosition / 2)
         }
         
         axisTitleNode.eulerAngles = axisTextRotation(forAxis: axis)
