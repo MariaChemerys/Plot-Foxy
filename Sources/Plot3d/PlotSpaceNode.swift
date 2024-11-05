@@ -495,11 +495,11 @@ public class PlotSpaceNode: SCNNode {
             
             switch axis {
             case .x:
-                textNode.position = SCNVector3(CGFloat(position), 0, zAxisHeight/2 + text.offset)
+                textNode.position = SCNVector3(CGFloat(position), 0, zPositiveAxisHeight + text.offset)
             case .y:
-                textNode.position = SCNVector3(0, CGFloat(position), zAxisHeight/2 + text.offset)
+                textNode.position = SCNVector3(0, CGFloat(position), zPositiveAxisHeight + text.offset)
             case .z:
-                textNode.position = SCNVector3(xAxisHeight/2 + text.offset, 0, CGFloat(position))
+                textNode.position = SCNVector3(xPositiveAxisHeight + text.offset, 0, CGFloat(position))
             }
             tickMarksNode.addChildNode(textNode)
         }
