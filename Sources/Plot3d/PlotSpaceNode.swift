@@ -96,9 +96,9 @@ public class PlotSpaceNode: SCNNode {
     let yPositiveArrowNode: SCNNode
     /// The node for the arrow on the negative y axis.
     let yNegativeArrowNode: SCNNode
-    /// The node for the positive arrow on the z axis.
+    /// The node for the arrow on the positive z axis.
     let zPositiveArrowNode: SCNNode
-    /// The node for the negative arrow on the z axis.
+    /// The node for the arrow on the negative z axis.
     let zNegativeArrowNode: SCNNode
     
     // Planes
@@ -132,12 +132,18 @@ public class PlotSpaceNode: SCNNode {
     public private(set) var gridLinesHorizontalXY = [SCNNode]()
     /// The horizontal gridlines on the XZ plane.
     public private(set) var gridLinesHorizontalXZ = [SCNNode]()
+    public private(set) var gridLinesHorizontalPositiveXZ = [SCNNode]()
+    public private(set) var gridLinesHorizontalNegativeXZ = [SCNNode]()
     /// The horizontal gridlines on the YZ plane.
     public private(set) var gridLinesHorizontalYZ = [SCNNode]()
+    public private(set) var gridLinesHorizontalPositiveYZ = [SCNNode]()
+    public private(set) var gridLinesHorizontalNegativeYZ = [SCNNode]()
     /// The vertical gridlines on the XY plane.
     public private(set) var gridLinesVerticalXY = [SCNNode]()
     /// The vertical gridlines on the XZ plane.
     public private(set) var gridLinesVerticalXZ = [SCNNode]()
+    public private(set) var gridLinesVerticalPositiveXZ = [SCNNode]()
+    public private(set) var gridLinesVerticalNegativeXZ = [SCNNode]()
     /// The vertical gridlines on the YZ plane.
     public private(set) var gridLinesVerticalYZ = [SCNNode]()
     
@@ -283,16 +289,25 @@ public class PlotSpaceNode: SCNNode {
         gridLinesVerticalXY += addGridLines(rootNode: yPositiveAxisNode, spacing: xGridSpacing, direction: PlotAxis.x.direction, color: config.xyGridColor, positiveAxisHeight: xPositiveAxisHeight, negativeAxisHeight: xNegativeAxisHeight, axisLength: yPositiveAxisHeight)
         gridLinesVerticalXY += addGridLines(rootNode: yNegativeAxisNode, spacing: xGridSpacing, direction: PlotAxis.x.direction, color: config.xyGridColor, positiveAxisHeight: xPositiveAxisHeight, negativeAxisHeight: xNegativeAxisHeight, axisLength: yNegativeAxisHeight)
         
-//        // xz grid lines
-        gridLinesHorizontalXZ += addGridLines(rootNode: xPositiveAxisNode, spacing: zGridSpacing, direction: PlotAxis.z.direction, color: config.xzGridColor, positiveAxisHeight: zPositiveAxisHeight, negativeAxisHeight: zNegativeAxisHeight, axisLength: xPositiveAxisHeight)
-        gridLinesHorizontalXZ += addGridLines(rootNode: xNegativeAxisNode, spacing: zGridSpacing, direction: PlotAxis.z.direction, color: config.xzGridColor, positiveAxisHeight: zPositiveAxisHeight, negativeAxisHeight: zNegativeAxisHeight, axisLength: xNegativeAxisHeight)
+        // xz grid lines
+        gridLinesHorizontalPositiveXZ += addGridLines(rootNode: xPositiveAxisNode, spacing: zGridSpacing, direction: PlotAxis.z.direction, color: config.xzGridColor, positiveAxisHeight: zPositiveAxisHeight, negativeAxisHeight: zNegativeAxisHeight, axisLength: xPositiveAxisHeight)
+        gridLinesHorizontalNegativeXZ += addGridLines(rootNode: xNegativeAxisNode, spacing: zGridSpacing, direction: PlotAxis.z.direction, color: config.xzGridColor, positiveAxisHeight: zPositiveAxisHeight, negativeAxisHeight: zNegativeAxisHeight, axisLength: xNegativeAxisHeight)
         
-        gridLinesVerticalXZ += addGridLines(rootNode: zPositiveAxisNode, spacing: xGridSpacing, direction: PlotAxis.x.direction, color: config.xzGridColor, positiveAxisHeight: xPositiveAxisHeight, negativeAxisHeight: xNegativeAxisHeight, axisLength: zPositiveAxisHeight)
-        gridLinesVerticalXZ += addGridLines(rootNode: zNegativeAxisNode, spacing: xGridSpacing, direction: PlotAxis.x.direction, color: config.xzGridColor, positiveAxisHeight: xPositiveAxisHeight, negativeAxisHeight: xNegativeAxisHeight, axisLength: zNegativeAxisHeight)
+        gridLinesHorizontalXZ.append(contentsOf: gridLinesHorizontalPositiveXZ)
+        gridLinesHorizontalXZ.append(contentsOf: gridLinesHorizontalNegativeXZ)
         
-//        // yz grid lines
-        gridLinesHorizontalYZ += addGridLines(rootNode: zPositiveAxisNode, spacing: yGridSpacing, direction: PlotAxis.z.negativeDirection, color: config.yzGridColor, positiveAxisHeight: yPositiveAxisHeight, negativeAxisHeight: yNegativeAxisHeight, axisLength: zPositiveAxisHeight)
-        gridLinesHorizontalYZ += addGridLines(rootNode: zNegativeAxisNode, spacing: yGridSpacing, direction: PlotAxis.z.negativeDirection, color: config.yzGridColor, positiveAxisHeight: yPositiveAxisHeight, negativeAxisHeight: yNegativeAxisHeight, axisLength: zNegativeAxisHeight)
+        gridLinesVerticalPositiveXZ += addGridLines(rootNode: zPositiveAxisNode, spacing: xGridSpacing, direction: PlotAxis.x.direction, color: config.xzGridColor, positiveAxisHeight: xPositiveAxisHeight, negativeAxisHeight: xNegativeAxisHeight, axisLength: zPositiveAxisHeight)
+        gridLinesVerticalNegativeXZ += addGridLines(rootNode: zNegativeAxisNode, spacing: xGridSpacing, direction: PlotAxis.x.direction, color: config.xzGridColor, positiveAxisHeight: xPositiveAxisHeight, negativeAxisHeight: xNegativeAxisHeight, axisLength: zNegativeAxisHeight)
+        
+        gridLinesVerticalXZ.append(contentsOf: gridLinesVerticalPositiveXZ)
+        gridLinesVerticalXZ.append(contentsOf: gridLinesVerticalNegativeXZ)
+        
+        // yz grid lines
+        gridLinesHorizontalPositiveYZ += addGridLines(rootNode: zPositiveAxisNode, spacing: yGridSpacing, direction: PlotAxis.z.negativeDirection, color: config.yzGridColor, positiveAxisHeight: yPositiveAxisHeight, negativeAxisHeight: yNegativeAxisHeight, axisLength: zPositiveAxisHeight)
+        gridLinesHorizontalNegativeYZ += addGridLines(rootNode: zNegativeAxisNode, spacing: yGridSpacing, direction: PlotAxis.z.negativeDirection, color: config.yzGridColor, positiveAxisHeight: yPositiveAxisHeight, negativeAxisHeight: yNegativeAxisHeight, axisLength: zNegativeAxisHeight)
+        
+        gridLinesHorizontalYZ.append(contentsOf: gridLinesHorizontalPositiveYZ)
+        gridLinesHorizontalYZ.append(contentsOf: gridLinesHorizontalNegativeYZ)
         
         gridLinesVerticalYZ += addGridLines(rootNode: yPositiveAxisNode, spacing: zGridSpacing, direction: PlotAxis.z.direction, color: config.yzGridColor, positiveAxisHeight: zPositiveAxisHeight, negativeAxisHeight: zNegativeAxisHeight, axisLength: yPositiveAxisHeight)
         gridLinesVerticalYZ += addGridLines(rootNode: yNegativeAxisNode, spacing: zGridSpacing, direction: PlotAxis.z.direction, color: config.yzGridColor, positiveAxisHeight: zPositiveAxisHeight, negativeAxisHeight: zNegativeAxisHeight, axisLength: yNegativeAxisHeight)
@@ -447,39 +462,46 @@ public class PlotSpaceNode: SCNNode {
         }
         
         // x
-        for (index, gridline) in gridLinesVerticalXZ.enumerated() {
-            let position = gridline.position.x
-            guard let text = delegate.plot(plotView!, textAtTickMark: index, forAxis: .x) else {
-                continue
-            }
-            let textNode = text.node
-            textNode.eulerAngles = tickMarkTextRotation(forAxis: .x)
-            textNode.position = SCNVector3(CGFloat(position), 0, zAxisHeight/2 + text.offset)
-            xTickMarksNode.addChildNode(textNode)
-        }
+        fillTickMarksNode(tickMarksNode: xTickMarksNode, gridLinesArray: gridLinesVerticalPositiveXZ, axis: .x)
+        fillTickMarksNode(tickMarksNode: xTickMarksNode, gridLinesArray: gridLinesVerticalNegativeXZ, axis: .x)
         
         // y
-        for (index, gridline) in gridLinesHorizontalYZ.enumerated() {
-            let position = -gridline.position.z
-            guard let text = delegate.plot(plotView!, textAtTickMark: index, forAxis: .y) else {
-                continue
-            }
-            let textNode = text.nodeRightAligned
-            textNode.eulerAngles = tickMarkTextRotation(forAxis: .y)
-            textNode.position = SCNVector3(0, CGFloat(position), zAxisHeight/2 + text.offset)
-            yTickMarksNode.addChildNode(textNode)
-        }
+        fillTickMarksNode(tickMarksNode: yTickMarksNode, gridLinesArray: gridLinesHorizontalPositiveYZ, axis: .y)
+        fillTickMarksNode(tickMarksNode: yTickMarksNode, gridLinesArray: gridLinesHorizontalNegativeYZ, axis: .y)
         
         // z
-        for (index, gridline) in gridLinesHorizontalXZ.enumerated() {
-            let position = gridline.position.z
-            guard let text = delegate.plot(plotView!, textAtTickMark: index, forAxis: .z) else {
+        fillTickMarksNode(tickMarksNode: zTickMarksNode, gridLinesArray: gridLinesHorizontalPositiveXZ, axis: .z)
+        fillTickMarksNode(tickMarksNode: zTickMarksNode, gridLinesArray: gridLinesHorizontalNegativeXZ, axis: .z)
+    }
+    
+    private func fillTickMarksNode(tickMarksNode: SCNNode, gridLinesArray: [SCNNode], axis: PlotAxis) {
+        for (index, gridline) in gridLinesArray.enumerated() {
+            var position: Float = 0
+            
+            switch axis {
+            case .x:
+                position = gridline.position.x
+            case .y:
+                position = -gridline.position.z
+            case .z:
+                position = gridline.position.z
+            }
+            
+            guard let text = delegate!.plot(plotView!, textAtTickMark: index, forAxis: axis) else {
                 continue
             }
             let textNode = text.node
-            textNode.eulerAngles = tickMarkTextRotation(forAxis: .z)
-            textNode.position = SCNVector3(xAxisHeight/2 + text.offset, 0, CGFloat(position))
-            zTickMarksNode.addChildNode(textNode)
+            textNode.eulerAngles = tickMarkTextRotation(forAxis: axis)
+            
+            switch axis {
+            case .x:
+                textNode.position = SCNVector3(CGFloat(position), 0, zAxisHeight/2 + text.offset)
+            case .y:
+                textNode.position = SCNVector3(0, CGFloat(position), zAxisHeight/2 + text.offset)
+            case .z:
+                textNode.position = SCNVector3(xAxisHeight/2 + text.offset, 0, CGFloat(position))
+            }
+            tickMarksNode.addChildNode(textNode)
         }
     }
     

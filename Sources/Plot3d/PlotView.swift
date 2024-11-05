@@ -234,11 +234,12 @@ public class PlotView: UIView {
     public func setAxisTitle(_ axis: PlotAxis,
                              text: String,
                              textColor: UIColor = .lightText,
-                             fontName: String = "AppleSDGothicNeo-UltraLight",
+                             //fontName: String = "AppleSDGothicNeo-UltraLight",
                              fontSize: CGFloat = 0.5,
                              flatness: CGFloat = 0.001,
                              offset: CGFloat = 0.6) {
-        let plotText = PlotText(text: text, textColor: textColor, fontName: fontName, fontSize: fontSize, flatness: flatness, offset: offset)
+//        let plotText = PlotText(text: text, textColor: textColor, fontName: fontName, fontSize: fontSize, flatness: flatness, offset: offset)
+        let plotText = PlotText(text: text, textColor: textColor, fontSize: fontSize, flatness: flatness, offset: offset)
         plotSpace.setAxisTitle(axis, plotText: plotText)
     }
     

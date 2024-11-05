@@ -19,7 +19,7 @@ public struct PlotText {
     /// The color to use for the created node's geometry.
     var textColor: UIColor
     /// The name of the font for the text.
-    var fontName: String
+    //var fontName: String
     /// The size of the font for the text.
     var fontSize: CGFloat
     /// A number that determines the accuracy or smoothness of the text geometry, the closer to 0 the smoother the geometry.
@@ -35,7 +35,8 @@ public struct PlotText {
     var node: SCNNode {
         let textGeometry = SCNText(string: text, extrusionDepth: 0)
         textGeometry.flatness = flatness
-        textGeometry.font = UIFont(name: fontName, size: fontSize)
+//        textGeometry.font = UIFont(name: fontName, size: fontSize)
+        textGeometry.font = UIFont.systemFont(ofSize: fontSize)
         textGeometry.materials.first!.diffuse.contents = textColor
         
         let textNode = SCNNode(geometry: textGeometry)
@@ -53,7 +54,8 @@ public struct PlotText {
     var nodeRightAligned: SCNNode {
         let textGeometry = SCNText(string: text, extrusionDepth: 0)
         textGeometry.flatness = flatness
-        textGeometry.font = UIFont(name: fontName, size: fontSize)
+//        textGeometry.font = UIFont(name: fontName, size: fontSize)
+        textGeometry.font = UIFont.systemFont(ofSize: fontSize)
         textGeometry.materials.first!.diffuse.contents = textColor
         
         let textNode = SCNNode(geometry: textGeometry)
@@ -79,13 +81,13 @@ public struct PlotText {
     */
     public init(text: String,
                 textColor: UIColor = .white,
-                fontName: String = "AppleSDGothicNeo-UltraLight",
+                //fontName: String = "AppleSDGothicNeo-UltraLight",
                 fontSize: CGFloat = 0.5,
                 flatness: CGFloat = 0.001,
                 offset: CGFloat = 0.1) {
         self.text = text
         self.textColor = textColor
-        self.fontName = fontName
+        //self.fontName = fontName
         self.fontSize = fontSize
         self.flatness = flatness
         self.offset = offset
