@@ -336,39 +336,51 @@ public class PlotSpaceNode: SCNNode {
         xPositiveAxisNode.position = SCNVector3(xPositiveAxisHeight/2, 0, 0)
         xPositiveAxisNode.eulerAngles = SCNVector3(0, 0, -Double.pi/2)
         addChildNode(xPositiveAxisNode)
-        xPositiveArrowNode.position = SCNVector3(0, xPositiveAxisHeight/2, 0)
-        xPositiveAxisNode.addChildNode(xPositiveArrowNode)
+        if xPositiveAxisHeight > 0 {
+            xPositiveArrowNode.position = SCNVector3(0, xPositiveAxisHeight/2, 0)
+            xPositiveAxisNode.addChildNode(xPositiveArrowNode)
+        }
         
         xNegativeAxisNode.position = SCNVector3(-xNegativeAxisHeight/2, 0, 0)
         xNegativeAxisNode.eulerAngles = SCNVector3(0, 0, -Double.pi/2)
         addChildNode(xNegativeAxisNode)
         xNegativeArrowNode.eulerAngles = SCNVector3(Double.pi, 0, 0)
-        xNegativeArrowNode.position = SCNVector3(0, -xNegativeAxisHeight/2, 0)
-        xNegativeAxisNode.addChildNode(xNegativeArrowNode)
+        if xNegativeAxisHeight > 0 {
+            xNegativeArrowNode.position = SCNVector3(0, -xNegativeAxisHeight/2, 0)
+            xNegativeAxisNode.addChildNode(xNegativeArrowNode)
+        }
 
         yPositiveAxisNode.position = SCNVector3(0, yPositiveAxisHeight/2, 0)
         addChildNode(yPositiveAxisNode)
-        yPositiveArrowNode.position = SCNVector3(0, yPositiveAxisHeight/2, 0)
-        yPositiveAxisNode.addChildNode(yPositiveArrowNode)
+        if yPositiveAxisHeight > 0 {
+            yPositiveArrowNode.position = SCNVector3(0, yPositiveAxisHeight/2, 0)
+            yPositiveAxisNode.addChildNode(yPositiveArrowNode)
+        }
 
         yNegativeAxisNode.position = SCNVector3(0, -yNegativeAxisHeight/2, 0)
         yNegativeArrowNode.eulerAngles = SCNVector3(Double.pi, 0, 0)
         addChildNode(yNegativeAxisNode)
-        yNegativeArrowNode.position = SCNVector3(0, -yNegativeAxisHeight/2, 0)
-        yNegativeAxisNode.addChildNode(yNegativeArrowNode)
+        if yNegativeAxisHeight > 0 {
+            yNegativeArrowNode.position = SCNVector3(0, -yNegativeAxisHeight/2, 0)
+            yNegativeAxisNode.addChildNode(yNegativeArrowNode)
+        }
 
         zPositiveAxisNode.position = SCNVector3(0, 0, zPositiveAxisHeight/2)
         zPositiveAxisNode.eulerAngles = SCNVector3(Double.pi/2, 0, 0)
         addChildNode(zPositiveAxisNode)
-        zPositiveArrowNode.position = SCNVector3(0, zPositiveAxisHeight/2, 0)
-        zPositiveAxisNode.addChildNode(zPositiveArrowNode)
+        if zPositiveAxisHeight > 0 {
+            zPositiveArrowNode.position = SCNVector3(0, zPositiveAxisHeight/2, 0)
+            zPositiveAxisNode.addChildNode(zPositiveArrowNode)
+        }
         
         zNegativeAxisNode.position = SCNVector3(0, 0, -zNegativeAxisHeight/2)
         zNegativeAxisNode.eulerAngles = SCNVector3(Double.pi/2, 0, 0)
         addChildNode(zNegativeAxisNode)
         zNegativeArrowNode.position = SCNVector3(0, -zNegativeAxisHeight/2, 0)
-        zNegativeArrowNode.eulerAngles = SCNVector3(0, 0, Double.pi)
-        zNegativeAxisNode.addChildNode(zNegativeArrowNode)
+        if zNegativeAxisHeight > 0 {
+            zNegativeArrowNode.eulerAngles = SCNVector3(0, 0, Double.pi)
+            zNegativeAxisNode.addChildNode(zNegativeArrowNode)
+        }
 
         originGeometry.materials.first!.diffuse.contents = UIColor.white
         let originNode = SCNNode(geometry: originGeometry)
