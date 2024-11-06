@@ -415,8 +415,14 @@ public class PlotSpaceNode: SCNNode {
      - returns: The array of nodes that contains the gridlines that were added.
     */
     private func addGridLines(rootNode: SCNNode, spacing: CGFloat, direction: SCNVector3, color: UIColor, positiveAxisHeight: CGFloat, negativeAxisHeight: CGFloat, axisLength: CGFloat) -> [SCNNode] {
-        let positiveLineCount = Int(positiveAxisHeight / spacing)
-        let negativeLineCount = Int(negativeAxisHeight / spacing)
+        var positiveLineCount = 0
+        if !(positiveAxisHeight / spacing).isNaN {
+            positiveLineCount = Int(positiveAxisHeight / spacing)
+        }
+        var negativeLineCount = 0
+        if !(negativeAxisHeight / spacing).isNaN {
+            negativeLineCount = Int(negativeAxisHeight / spacing)
+        }
         var gridLines = [SCNNode]()
         
         for i in 0..<positiveLineCount {
