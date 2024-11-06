@@ -390,17 +390,17 @@ public class PlotSpaceNode: SCNNode {
         let zOffset = zGridSpacing/2
         
         unitPlaneXY.materials.first!.diffuse.contents = config.xyUnitPlaneColor
-        unitPlaneXYNode.position = SCNVector3(xOffset, yOffset, 0)
+        unitPlaneXYNode.position = SCNVector3(xPositiveAxisHeight > 0 ? xOffset : -xOffset, yPositiveAxisHeight > 0 ? yOffset : -yOffset, 0)
         addChildNode(unitPlaneXYNode)
         
         unitPlaneXZ.materials.first!.diffuse.contents = config.xzUnitPlaneColor
         unitPlaneXZNode.eulerAngles = SCNVector3(-Double.pi/2, 0, 0)
-        unitPlaneXZNode.position = SCNVector3(xOffset, 0, zOffset)
+        unitPlaneXZNode.position = SCNVector3(xPositiveAxisHeight > 0 ? xOffset : -xOffset, 0, zPositiveAxisHeight > 0 ? zOffset : -zOffset)
         addChildNode(unitPlaneXZNode)
         
         unitPlaneYZ.materials.first!.diffuse.contents = config.yzUnitPlaneColor
         unitPlaneYZNode.eulerAngles = SCNVector3(0, Double.pi/2, 0)
-        unitPlaneYZNode.position = SCNVector3(0, yOffset, zOffset)
+        unitPlaneYZNode.position = SCNVector3(0, yPositiveAxisHeight > 0 ? yOffset : -yOffset, zPositiveAxisHeight > 0 ? zOffset : -zOffset)
         addChildNode(unitPlaneYZNode)
     }
     
