@@ -333,59 +333,73 @@ public class PlotSpaceNode: SCNNode {
      - parameter axisHeight: The height of each axis.
      */
     private func setupAxis() {
-        xPositiveAxisNode.position = SCNVector3(xPositiveAxisHeight/2, 0, 0)
-        xPositiveAxisNode.eulerAngles = SCNVector3(0, 0, -Double.pi/2)
-        addChildNode(xPositiveAxisNode)
-        if xPositiveAxisHeight > 0 {
-            xPositiveArrowNode.position = SCNVector3(0, xPositiveAxisHeight/2, 0)
-            xPositiveAxisNode.addChildNode(xPositiveArrowNode)
-        }
+        addPositiveAxisNode(axisNode: xPositiveAxisNode, axisHeight: xPositiveAxisHeight, axis: .x)
+        addPositiveArrowNode(arrowNode: xPositiveArrowNode, axisNode: xPositiveAxisNode, axisHeight: xPositiveAxisHeight)
         
-        xNegativeAxisNode.position = SCNVector3(-xNegativeAxisHeight/2, 0, 0)
-        xNegativeAxisNode.eulerAngles = SCNVector3(0, 0, -Double.pi/2)
-        addChildNode(xNegativeAxisNode)
+        addNegativeAxisNode(axisNode: xNegativeAxisNode, axisHeight: xNegativeAxisHeight, axis: .x)
         xNegativeArrowNode.eulerAngles = SCNVector3(Double.pi, 0, 0)
-        if xNegativeAxisHeight > 0 {
-            xNegativeArrowNode.position = SCNVector3(0, -xNegativeAxisHeight/2, 0)
-            xNegativeAxisNode.addChildNode(xNegativeArrowNode)
-        }
+        addNegativeArrowNode(arrowNode: xNegativeArrowNode, axisNode: xNegativeAxisNode, axisHeight: xNegativeAxisHeight)
 
-        yPositiveAxisNode.position = SCNVector3(0, yPositiveAxisHeight/2, 0)
-        addChildNode(yPositiveAxisNode)
-        if yPositiveAxisHeight > 0 {
-            yPositiveArrowNode.position = SCNVector3(0, yPositiveAxisHeight/2, 0)
-            yPositiveAxisNode.addChildNode(yPositiveArrowNode)
-        }
+        addPositiveAxisNode(axisNode: yPositiveAxisNode, axisHeight: yPositiveAxisHeight, axis: .y)
+        addPositiveArrowNode(arrowNode: yPositiveArrowNode, axisNode: yPositiveAxisNode, axisHeight: yPositiveAxisHeight)
 
-        yNegativeAxisNode.position = SCNVector3(0, -yNegativeAxisHeight/2, 0)
+        addNegativeAxisNode(axisNode: yNegativeAxisNode, axisHeight: yNegativeAxisHeight, axis: .y)
         yNegativeArrowNode.eulerAngles = SCNVector3(Double.pi, 0, 0)
-        addChildNode(yNegativeAxisNode)
-        if yNegativeAxisHeight > 0 {
-            yNegativeArrowNode.position = SCNVector3(0, -yNegativeAxisHeight/2, 0)
-            yNegativeAxisNode.addChildNode(yNegativeArrowNode)
-        }
+        addNegativeArrowNode(arrowNode: yNegativeArrowNode, axisNode: yNegativeAxisNode, axisHeight: yNegativeAxisHeight)
 
-        zPositiveAxisNode.position = SCNVector3(0, 0, zPositiveAxisHeight/2)
-        zPositiveAxisNode.eulerAngles = SCNVector3(Double.pi/2, 0, 0)
-        addChildNode(zPositiveAxisNode)
-        if zPositiveAxisHeight > 0 {
-            zPositiveArrowNode.position = SCNVector3(0, zPositiveAxisHeight/2, 0)
-            zPositiveAxisNode.addChildNode(zPositiveArrowNode)
-        }
+        addPositiveAxisNode(axisNode: zPositiveAxisNode, axisHeight: zPositiveAxisHeight, axis: .z)
+        addPositiveArrowNode(arrowNode: zPositiveArrowNode, axisNode: zPositiveAxisNode, axisHeight: zPositiveAxisHeight)
         
-        zNegativeAxisNode.position = SCNVector3(0, 0, -zNegativeAxisHeight/2)
-        zNegativeAxisNode.eulerAngles = SCNVector3(Double.pi/2, 0, 0)
-        addChildNode(zNegativeAxisNode)
-        zNegativeArrowNode.position = SCNVector3(0, -zNegativeAxisHeight/2, 0)
-        if zNegativeAxisHeight > 0 {
-            zNegativeArrowNode.eulerAngles = SCNVector3(0, 0, Double.pi)
-            zNegativeAxisNode.addChildNode(zNegativeArrowNode)
-        }
+        addNegativeAxisNode(axisNode: zNegativeAxisNode, axisHeight: zNegativeAxisHeight, axis: .z)
+        zNegativeArrowNode.eulerAngles = SCNVector3(0, 0, Double.pi)
+        addNegativeArrowNode(arrowNode: zNegativeArrowNode, axisNode: zNegativeAxisNode, axisHeight: zNegativeAxisHeight)
 
         originGeometry.materials.first!.diffuse.contents = UIColor.white
         let originNode = SCNNode(geometry: originGeometry)
         originNode.position = SCNVector3(0, 0, 0)
         addChildNode(originNode)
+    }
+    
+    func addPositiveAxisNode(axisNode: SCNNode, axisHeight: CGFloat, axis: PlotAxis) {
+        switch axis {
+        case .x:
+            axisNode.position = SCNVector3(axisHeight/2, 0, 0)
+            axisNode.eulerAngles = SCNVector3(0, 0, -Double.pi/2)
+        case .y:
+            axisNode.position = SCNVector3(0, axisHeight/2, 0)
+        case .z:
+            axisNode.position = SCNVector3(0, 0, axisHeight/2)
+            axisNode.eulerAngles = SCNVector3(Double.pi/2, 0, 0)
+        }
+        addChildNode(axisNode)
+    }
+    
+    func addNegativeAxisNode(axisNode: SCNNode, axisHeight: CGFloat, axis: PlotAxis) {
+        switch axis {
+        case .x:
+            axisNode.position = SCNVector3(-axisHeight/2, 0, 0)
+            axisNode.eulerAngles = SCNVector3(0, 0, -Double.pi/2)
+        case .y:
+            axisNode.position = SCNVector3(0, -axisHeight/2, 0)
+        case .z:
+            axisNode.position = SCNVector3(0, 0, -axisHeight/2)
+            axisNode.eulerAngles = SCNVector3(Double.pi/2, 0, 0)
+        }
+        addChildNode(axisNode)
+    }
+    
+    func addPositiveArrowNode(arrowNode: SCNNode, axisNode: SCNNode, axisHeight: CGFloat) {
+        if axisHeight > 0 {
+            arrowNode.position = SCNVector3(0, axisHeight/2, 0)
+            axisNode.addChildNode(arrowNode)
+        }
+    }
+    
+    func addNegativeArrowNode(arrowNode: SCNNode, axisNode: SCNNode, axisHeight: CGFloat) {
+        if axisHeight > 0 {
+            arrowNode.position = SCNVector3(0, -axisHeight/2, 0)
+            axisNode.addChildNode(arrowNode)
+        }
     }
     
     /**
