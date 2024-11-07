@@ -360,20 +360,6 @@ public class PlotSpaceNode: SCNNode {
         addChildNode(originNode)
     }
     
-    func addPositiveArrowNode(arrowNode: SCNNode, axisNode: SCNNode, axisHeight: CGFloat) {
-        if axisHeight > 0 {
-            arrowNode.position = SCNVector3(0, axisHeight/2, 0)
-            axisNode.addChildNode(arrowNode)
-        }
-    }
-    
-    func addNegativeArrowNode(arrowNode: SCNNode, axisNode: SCNNode, axisHeight: CGFloat) {
-        if axisHeight > 0 {
-            arrowNode.position = SCNVector3(0, -axisHeight/2, 0)
-            axisNode.addChildNode(arrowNode)
-        }
-    }
-    
     /**
      Sets up the unit planes for each axis and adds them as child nodes.
      - parameters:
@@ -897,38 +883,4 @@ public class PlotSpaceNode: SCNNode {
         axisTitleNode.eulerAngles = axisTextRotation(forAxis: axis)
         addChildNode(axisTitleNode)
     }
-    
-    func axisTextRotation(forAxis axis: PlotAxis) -> SCNVector3 {
-        switch axis {
-        case .x:
-            return SCNVector3(-Double.pi/2, 0, 0)
-        case .y:
-           return SCNVector3(-Double.pi/2, 0, -Double.pi/2)
-        case .z:
-            return SCNVector3(-Double.pi/2, Double.pi/2, 0)
-        }
-    }
-    
-    func highlightRotation(forAxis axis: PlotAxis) -> SCNVector3 {
-        switch axis {
-        case .x:
-            return SCNVector3(-Double.pi/2, 0, 0)
-        case .y:
-           return SCNVector3(0, 0, -Double.pi/2)
-        case .z:
-            return SCNVector3(0, 0, 0)
-        }
-    }
-    
-    func tickMarkTextRotation(forAxis axis: PlotAxis) -> SCNVector3 {
-        switch axis {
-        case .x:
-            return SCNVector3(-Double.pi/2, 0, 0)
-        case .y:
-           return SCNVector3(-Double.pi/2, Double.pi/2, -Double.pi/2)
-        case .z:
-            return SCNVector3(-Double.pi/2, Double.pi/2, 0)
-        }
-    }
-    
 }
