@@ -389,15 +389,18 @@ public class PlotSpaceNode: SCNNode {
     }
     
     /**
-    Adds gridlines to the given node in the given direction.  The gridlines are added as children to the root node.
-    - parameters:
-        - rootNode: The node that the gridlines will be added to.
-        - spacing: The spacing between gridlines.
-        - direction: The direction to place the gridlines.
-        - color: The color for the gridlines.
-        - axisHeight: The scene height of the axis.
-     - returns: The array of nodes that contains the gridlines that were added.
-    */
+     Adds gridlines along a specified axis direction and returns an array of nodes containing these gridlines.
+     Gridlines are added both positively and negatively along the specified axis from the origin.
+     - parameters:
+        - rootNode: The node to which the gridlines will be added as children.
+        - spacing: The distance between each gridline.
+        - direction: The direction in which the gridlines extend (e.g., along the x, y, or z axis).
+        - color: The color of the gridlines.
+        - positiveAxisHeight: The extent of the gridlines in the positive direction along the axis.
+        - negativeAxisHeight: The extent of the gridlines in the negative direction along the axis.
+        - axisLength: The length of each gridline along its thickness direction (perpendicular to the grid).
+     - returns: An array of `SCNNode` instances representing each gridline that was added to the root node.
+     */
     private func addGridLines(rootNode: SCNNode, spacing: CGFloat, direction: SCNVector3, color: UIColor, positiveAxisHeight: CGFloat, negativeAxisHeight: CGFloat, axisLength: CGFloat) -> [SCNNode] {
         var positiveLineCount = 0
         if !(positiveAxisHeight / spacing).isNaN {
@@ -464,6 +467,13 @@ public class PlotSpaceNode: SCNNode {
         fillTickMarksNode(tickMarksNode: zTickMarksNode, gridLinesArray: gridLinesHorizontalNegativeXZ, axis: .z)
     }
     
+    /**
+     Fills the provided tick marks node with labels at each tick mark position along a specified axis.
+     - parameters:
+        - tickMarksNode: The node to which the tick mark labels will be added.
+        - gridLinesArray: An array of gridline nodes that determine the positions of tick marks along the axis.
+        - axis: The axis for which tick marks are being created (x, y, or z).
+    */
     private func fillTickMarksNode(tickMarksNode: SCNNode, gridLinesArray: [SCNNode], axis: PlotAxis) {
         for (index, gridline) in gridLinesArray.enumerated() {
             var position: Float = 0
