@@ -187,6 +187,8 @@ public class PlotSpaceNode: SCNNode {
     /// The root node of all of the plotted connections.
     private var connectionRootNode: SCNNode
     
+    private var plotConfig: PlotConfiguration
+    
     // MARK: - Init
     
     /**
@@ -194,6 +196,8 @@ public class PlotSpaceNode: SCNNode {
      - parameter config: The configuration that defines the attributes to use.
      */
     init(config: PlotConfiguration) {
+        
+        plotConfig = config
         
         xAxisHeight = config.xAxisHeight
         xPositiveAxisHeight = xAxisHeight / (abs(config.xMax) + abs(config.xMin)) * abs(config.xMax)
@@ -476,20 +480,42 @@ public class PlotSpaceNode: SCNNode {
     */
     private func fillTickMarksNode(tickMarksNode: SCNNode, gridLinesArray: [SCNNode], axis: PlotAxis) {
         for (index, gridline) in gridLinesArray.enumerated() {
+            
             var position: Float = 0
+            let text: PlotText
+            
+            let xAxisLastPositiveIndex = Int(plotConfig.xMax / plotConfig.xTickInterval)
+            print("xAxisLastPositiveIndex: \(xAxisLastPositiveIndex)")
+            let yAxisLastPositiveIndex = Int(plotConfig.yMax / plotConfig.yTickInterval)
+            let zAxisLastPositiveIndex = Int(plotConfig.zMax / plotConfig.zTickInterval)
             
             switch axis {
             case .x:
                 position = gridline.position.x
+                text = PlotText(
+                    text: CGFloat(index) * plotConfig.xTickInterval < plotConfig.xMax ?
+                    "\(CGFloat(index + 1) * plotConfig.xTickInterval)" :
+                    "-\(CGFloat(index + 1 - xAxisLastPositiveIndex) * plotConfig.xTickInterval)",
+                    fontSize: 0.2,
+                    offset: 0.2)
             case .y:
                 position = -gridline.position.z
+                text = PlotText(
+                    text: CGFloat(index) * plotConfig.zTickInterval < plotConfig.zMax ?
+                    "\(CGFloat(index + 1) * plotConfig.zTickInterval)" :
+                    "-\(CGFloat(index + 1 - zAxisLastPositiveIndex) * plotConfig.zTickInterval)",
+                    fontSize: 0.2,
+                    offset: 0.2)
             case .z:
                 position = gridline.position.z
+                text = PlotText(
+                    text: CGFloat(index) * plotConfig.yTickInterval < plotConfig.yMax ?
+                    "\(CGFloat(index + 1) * plotConfig.yTickInterval)" :
+                    "-\(CGFloat(index + 1 - yAxisLastPositiveIndex) * plotConfig.yTickInterval)",
+                    fontSize: 0.2,
+                    offset: 0.2)
             }
             
-            guard let text = delegate!.plot(plotView!, textAtTickMark: index, forAxis: axis) else {
-                continue
-            }
             let textNode = text.node
             textNode.eulerAngles = tickMarkTextRotation(forAxis: axis)
             
@@ -894,3 +920,5 @@ public class PlotSpaceNode: SCNNode {
         addChildNode(axisTitleNode)
     }
 }
+
+
