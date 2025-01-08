@@ -484,34 +484,56 @@ public class PlotSpaceNode: SCNNode {
             var position: Float = 0
             let text: PlotText
             
-            let xAxisLastPositiveIndex = Int(plotConfig.xMax / plotConfig.xTickInterval)
-            print("xAxisLastPositiveIndex: \(xAxisLastPositiveIndex)")
-            let yAxisLastPositiveIndex = Int(plotConfig.yMax / plotConfig.yTickInterval)
-            let zAxisLastPositiveIndex = Int(plotConfig.zMax / plotConfig.zTickInterval)
+            let xAxisLastPositiveIndex = Int(round(plotConfig.xMax / plotConfig.xTickInterval))
+            let yAxisLastPositiveIndex = Int(round(plotConfig.yMax / plotConfig.yTickInterval))
+            let zAxisLastPositiveIndex = Int(round(plotConfig.zMax / plotConfig.zTickInterval))
+            
+            // Formatter function to handle number display
+            func formattedValue(_ value: CGFloat) -> String {
+                if value == floor(value) {
+                    return String(Int(value)) // Whole number
+                } else {
+                    return String(format: "%.1f", value) // Fractional number
+                }
+            }
             
             switch axis {
             case .x:
                 position = gridline.position.x
+                let tickValue: CGFloat
+                if index < xAxisLastPositiveIndex {
+                    tickValue = CGFloat(index + 1) * plotConfig.xTickInterval
+                } else {
+                    tickValue = -CGFloat(index - xAxisLastPositiveIndex + 1) * plotConfig.xTickInterval
+                }
                 text = PlotText(
-                    text: CGFloat(index) * plotConfig.xTickInterval < plotConfig.xMax ?
-                    "\(CGFloat(index + 1) * plotConfig.xTickInterval)" :
-                    "-\(CGFloat(index + 1 - xAxisLastPositiveIndex) * plotConfig.xTickInterval)",
+                    text: formattedValue(tickValue),
                     fontSize: 0.2,
                     offset: 0.2)
+                
             case .y:
                 position = -gridline.position.z
+                let tickValue: CGFloat
+                if index < yAxisLastPositiveIndex {
+                    tickValue = CGFloat(index + 1) * plotConfig.yTickInterval
+                } else {
+                    tickValue = -CGFloat(index - yAxisLastPositiveIndex + 1) * plotConfig.yTickInterval
+                }
                 text = PlotText(
-                    text: CGFloat(index) * plotConfig.zTickInterval < plotConfig.zMax ?
-                    "\(CGFloat(index + 1) * plotConfig.zTickInterval)" :
-                    "-\(CGFloat(index + 1 - zAxisLastPositiveIndex) * plotConfig.zTickInterval)",
+                    text: formattedValue(tickValue),
                     fontSize: 0.2,
                     offset: 0.2)
+                
             case .z:
                 position = gridline.position.z
+                let tickValue: CGFloat
+                if index < zAxisLastPositiveIndex {
+                    tickValue = CGFloat(index + 1) * plotConfig.zTickInterval
+                } else {
+                    tickValue = -CGFloat(index - zAxisLastPositiveIndex + 1) * plotConfig.zTickInterval
+                }
                 text = PlotText(
-                    text: CGFloat(index) * plotConfig.yTickInterval < plotConfig.yMax ?
-                    "\(CGFloat(index + 1) * plotConfig.yTickInterval)" :
-                    "-\(CGFloat(index + 1 - yAxisLastPositiveIndex) * plotConfig.yTickInterval)",
+                    text: formattedValue(tickValue),
                     fontSize: 0.2,
                     offset: 0.2)
             }
