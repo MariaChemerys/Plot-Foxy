@@ -479,6 +479,10 @@ public class PlotSpaceNode: SCNNode {
         - axis: The axis for which tick marks are being created (x, y, or z).
     */
     private func fillTickMarksNode(tickMarksNode: SCNNode, gridLinesArray: [SCNNode], axis: PlotAxis) {
+        var xAxisDirectionSwitchedToNegative: Bool = false
+        var yAxisDirectionSwitchedToNegative: Bool = false
+        var zAxisDirectionSwitchedToNegative: Bool = false
+        
         for (index, gridline) in gridLinesArray.enumerated() {
             
             var position: Float = 0
@@ -500,12 +504,21 @@ public class PlotSpaceNode: SCNNode {
             switch axis {
             case .x:
                 position = gridline.position.x
-                let tickValue: CGFloat
+                var tickValue: CGFloat
                 if index < xAxisLastPositiveIndex {
                     tickValue = CGFloat(index + 1) * plotConfig.xTickInterval
+                    if position < 0 && tickValue == CGFloat(xAxisLastPositiveIndex) * plotConfig.xTickInterval {
+                        tickValue = 0
+                        xAxisDirectionSwitchedToNegative = true
+                    }
                 } else {
                     tickValue = -CGFloat(index - xAxisLastPositiveIndex + 1) * plotConfig.xTickInterval
                 }
+                
+                if xAxisDirectionSwitchedToNegative {
+                    tickValue -= plotConfig.xTickInterval
+                }
+                
                 text = PlotText(
                     text: formattedValue(tickValue),
                     fontSize: 0.2,
@@ -513,12 +526,21 @@ public class PlotSpaceNode: SCNNode {
                 
             case .y:
                 position = -gridline.position.z
-                let tickValue: CGFloat
+                var tickValue: CGFloat
                 if index < yAxisLastPositiveIndex {
                     tickValue = CGFloat(index + 1) * plotConfig.yTickInterval
+                    if position < 0 && tickValue == CGFloat(yAxisLastPositiveIndex) * plotConfig.yTickInterval {
+                        tickValue = 0
+                        yAxisDirectionSwitchedToNegative = true
+                    }
                 } else {
                     tickValue = -CGFloat(index - yAxisLastPositiveIndex + 1) * plotConfig.yTickInterval
                 }
+                
+                if yAxisDirectionSwitchedToNegative {
+                    tickValue -= plotConfig.yTickInterval
+                }
+                
                 text = PlotText(
                     text: formattedValue(tickValue),
                     fontSize: 0.2,
@@ -526,12 +548,21 @@ public class PlotSpaceNode: SCNNode {
                 
             case .z:
                 position = gridline.position.z
-                let tickValue: CGFloat
+                var tickValue: CGFloat
                 if index < zAxisLastPositiveIndex {
                     tickValue = CGFloat(index + 1) * plotConfig.zTickInterval
+                    if position < 0 && tickValue == CGFloat(zAxisLastPositiveIndex) * plotConfig.zTickInterval {
+                        tickValue = 0
+                        zAxisDirectionSwitchedToNegative = true
+                    }
                 } else {
                     tickValue = -CGFloat(index - zAxisLastPositiveIndex + 1) * plotConfig.zTickInterval
                 }
+                
+                if zAxisDirectionSwitchedToNegative {
+                    tickValue -= plotConfig.zTickInterval
+                }
+
                 text = PlotText(
                     text: formattedValue(tickValue),
                     fontSize: 0.2,
@@ -552,7 +583,7 @@ public class PlotSpaceNode: SCNNode {
             tickMarksNode.addChildNode(textNode)
         }
     }
-    
+   
     /**
      Adds the wall for the given plane.
      - parameters:
@@ -942,5 +973,3 @@ public class PlotSpaceNode: SCNNode {
         addChildNode(axisTitleNode)
     }
 }
-
-
