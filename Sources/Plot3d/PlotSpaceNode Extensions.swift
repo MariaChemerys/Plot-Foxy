@@ -133,11 +133,11 @@ extension PlotSpaceNode {
     func tickMarkTextRotation(forAxis axis: PlotAxis) -> SCNVector3 {
         switch axis {
         case .x:
-            return SCNVector3(-Double.pi/2, 0, 0)
+            return SCNVector3(-Double.pi/2, Double.pi/2, 0)
         case .y:
            return SCNVector3(-Double.pi/2, Double.pi/2, -Double.pi/2)
         case .z:
-            return SCNVector3(-Double.pi/2, Double.pi/2, 0)
+            return SCNVector3(-Double.pi/2, Double.pi*2, 0)
         }
     }
 }
