@@ -39,6 +39,10 @@ public class PlotSpaceNode: SCNNode {
     let axisRadius: CGFloat
     /// The radius of the cyclinder for each gridline.
     let gridlineRadius: CGFloat
+    /// The font size of the tickmark for each axis.
+    var tickMarkFontSize: CGFloat
+    /// The offset of the tickmark for each axis.
+    var tickMarkOffset: CGFloat
     /// The geometry of the positive x axis.
     let xPositiveAxis: SCNGeometry
     /// The geometry of the negative x axis.
@@ -280,6 +284,9 @@ public class PlotSpaceNode: SCNNode {
         xMin = config.xMin
         yMin = config.yMin
         zMin = config.zMin
+        
+        tickMarkFontSize = 0.26
+        tickMarkOffset = 0.2
                 
         super.init()
         
@@ -458,15 +465,12 @@ public class PlotSpaceNode: SCNNode {
             return
         }
         
-        // x
         fillTickMarksNode(tickMarksNode: xTickMarksNode, gridLinesArray: gridLinesVerticalPositiveXZ, axis: .x)
         fillTickMarksNode(tickMarksNode: xTickMarksNode, gridLinesArray: gridLinesVerticalNegativeXZ, axis: .x)
         
-        // y
         fillTickMarksNode(tickMarksNode: yTickMarksNode, gridLinesArray: gridLinesHorizontalPositiveYZ, axis: .y)
         fillTickMarksNode(tickMarksNode: yTickMarksNode, gridLinesArray: gridLinesHorizontalNegativeYZ, axis: .y)
         
-        // z
         fillTickMarksNode(tickMarksNode: zTickMarksNode, gridLinesArray: gridLinesHorizontalPositiveXZ, axis: .z)
         fillTickMarksNode(tickMarksNode: zTickMarksNode, gridLinesArray: gridLinesHorizontalNegativeXZ, axis: .z)
     }
@@ -521,8 +525,8 @@ public class PlotSpaceNode: SCNNode {
                 
                 text = PlotText(
                     text: formattedValue(tickValue),
-                    fontSize: 0.2,
-                    offset: 0.2)
+                    fontSize: tickMarkFontSize,
+                    offset: tickMarkOffset)
                 
             case .y:
                 position = -gridline.position.z
@@ -543,8 +547,8 @@ public class PlotSpaceNode: SCNNode {
                 
                 text = PlotText(
                     text: formattedValue(tickValue),
-                    fontSize: 0.2,
-                    offset: 0.2)
+                    fontSize: tickMarkFontSize,
+                    offset: tickMarkOffset)
                 
             case .z:
                 position = gridline.position.z
@@ -565,8 +569,8 @@ public class PlotSpaceNode: SCNNode {
 
                 text = PlotText(
                     text: formattedValue(tickValue),
-                    fontSize: 0.2,
-                    offset: 0.2)
+                    fontSize: tickMarkFontSize,
+                    offset: tickMarkOffset)
             }
             
             let textNode = text.node
@@ -582,6 +586,17 @@ public class PlotSpaceNode: SCNNode {
             }
             tickMarksNode.addChildNode(textNode)
         }
+    }
+    
+    /**
+        Sets properties for tick marks on the axes.
+        - parameters:
+           - fontSize: The font size to be applied to the tick mark labels.
+           - offset: The offset distance of the tick mark labels from the axis.
+    */
+    func setTickmarkProperties(fontSize: CGFloat, offset: CGFloat){
+        tickMarkFontSize = fontSize
+        tickMarkOffset = offset
     }
    
     /**

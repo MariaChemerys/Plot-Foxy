@@ -238,9 +238,18 @@ public class PlotView: UIView {
                              fontSize: CGFloat = 0.5,
                              flatness: CGFloat = 0.001,
                              offset: CGFloat = 0.6) {
-//        let plotText = PlotText(text: text, textColor: textColor, fontName: fontName, fontSize: fontSize, flatness: flatness, offset: offset)
         let plotText = PlotText(text: text, textColor: textColor, fontSize: fontSize, flatness: flatness, offset: offset)
         plotSpace.setAxisTitle(axis, plotText: plotText)
+    }
+    
+    /**
+        Sets properties for tick marks on the axes.
+        - parameters:
+           - fontSize: The font size to be applied to the tick mark labels.
+           - offset: The offset distance of the tick mark labels from the axis.
+    */
+    public func setTickmarkProperties(fontSize: CGFloat, offset: CGFloat) {
+        plotSpace.setTickmarkProperties(fontSize: fontSize, offset: offset)
     }
     
     /**
