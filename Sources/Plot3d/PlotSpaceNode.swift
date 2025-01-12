@@ -285,7 +285,7 @@ public class PlotSpaceNode: SCNNode {
         yMin = config.yMin
         zMin = config.zMin
         
-        tickMarkFontSize = 0.26
+        tickMarkFontSize = 0.2
         tickMarkOffset = 0.2
                 
         super.init()
